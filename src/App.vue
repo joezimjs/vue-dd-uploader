@@ -2,42 +2,38 @@
 	<div id="app">
 		<DropZone class="drop-area" @files-dropped="addFiles" v-slot:default="{ dropZoneActive }">
 			<label for="file-input">
-				<span v-if="!dropZoneActive">Drag Your Files Here</span>
-				<span v-else>Drop Them</span>
+				<div>{{ dropZoneActive ? 'Drop Them Here' : 'Drag Your Files Here' }}</div>
+				<div class="smaller" v-if="!dropZoneActive">
+					or <strong><em>click here</em></strong> to select files
+				</div>
+				<div class="smaller" v-else>
+					to add them
+				</div>
 				<input type="file" id="file-input" multiple @change="onInputChange" />
 			</label>
 			<ul class="image-list" v-show="files.length">
-				<li v-for="(file, i) of files" :key="file.id">
-					<button @click="removeFile(i)" class="close-icon">&times;</button>
-					<img :src="file.url" alt="" width="500" />
-					<!-- ({{ i }}) {{ file.status }} -->
-
-					<span class="status-indicator loading-indicator" v-show="file.status == 'loading'">Loading</span>
-					<span class="status-indicator success-indicator" v-show="file.status == true">Uploaded</span>
-					<span class="status-indicator failure-indicator" v-show="file.status == false">Error</span>
-				</li>
+				<FilePreview v-for="file of files" :key="file.id" :file="file" tag="li" @remove="removeFile" />
 			</ul>
 		</DropZone>
-		<button @click.prevent="uploadFiles" class="upload-button">Upload</button>
+		<button @click.prevent="uploadFiles(files)" class="upload-button">Upload</button>
 	</div>
 </template>
 
 <script>
-// import { ref } from 'vue'
 import useFileList from '@/compositions/file-list'
-import { createUploader } from '@/compositions/file-uploader'
+import createUploader from '@/compositions/file-uploader'
 import DropZone from './components/DropZone.vue'
-
-const uploadFile = createUploader('YOUR URL HERE')
+import FilePreview from './components/FilePreview.vue'
 
 export default {
 	name: 'app',
-	components: { DropZone },
+	components: { DropZone, FilePreview },
 
 	setup() {
 		const { files, addFiles, removeFile, fileUrl } = useFileList()
+		const { uploadFiles } = createUploader('YOUR URL HERE')
 
-		return { files, addFiles, removeFile, fileUrl }
+		return { files, addFiles, removeFile, fileUrl, uploadFiles }
 	},
 
 	data: () => ({
@@ -46,16 +42,6 @@ export default {
 	}),
 
 	methods: {
-		async uploadFiles() {
-			this.status = 'in progress'
-			console.log(this.files, this.files.value)
-			try {
-				await Promise.all(this.files.map(file => uploadFile(file)))
-				this.status = 'success'
-			} catch (e) {
-				this.status = 'fail'
-			}
-		},
 		onInputChange(e) {
 			this.addFiles(e.target.files)
 			e.target.value = null // reset so that selecting the same file again will still cause it to fire this change
@@ -63,6 +49,37 @@ export default {
 	}
 }
 </script>
+
+<style>
+html {
+	height: 100%;
+	width: 100%;
+	background-color: #b6d6f5;
+
+	/* Overlapping Stripes Background, based off https://codepen.io/MinzCode/pen/Exgpqpe */
+	--color1: rgba(55, 165, 255, 0.35);
+	--color2: rgba(96, 181, 250, 0.35);
+	--rotation: 135deg;
+	--size: 10px;
+	background-blend-mode: multiply;
+	background-image: repeating-linear-gradient(
+			var(--rotation),
+			var(--color1) calc(var(--size) * 0),
+			var(--color1) calc(var(--size) * 9),
+			var(--color2) calc(var(--size) * 9),
+			var(--color2) calc(var(--size) * 12),
+			var(--color1) calc(var(--size) * 12)
+		),
+		repeating-linear-gradient(
+			calc(var(--rotation) + 90deg),
+			var(--color1) calc(var(--size) * 0),
+			var(--color1) calc(var(--size) * 9),
+			var(--color2) calc(var(--size) * 9),
+			var(--color2) calc(var(--size) * 12),
+			var(--color1) calc(var(--size) * 12)
+		);
+}
+</style>
 
 <style scoped lang="stylus">
 #app {
@@ -75,29 +92,30 @@ export default {
 	max-width: 800px;
 }
 
-button {
-	cursor: pointer;
-}
-
 .drop-area {
 	padding: 50px;
-	background: #c5def3;
+	background: #ffffff55;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	transition: .2s ease;
 
 	&[data-active=true] {
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-		// background: #96b8d3
-		// color: white
+		background: #ffffffcc;
 	}
 }
 
 label {
 	font-size: 36px;
+	cursor: pointer;
 
 	input[type=file] {
 		position: absolute;
 		visibility: hidden;
 		pointer-events: none;
+	}
+
+	.smaller {
+		font-size: 16px;
 	}
 }
 
@@ -106,60 +124,6 @@ label {
 	list-style: none;
 	flex-wrap: wrap;
 	padding: 0;
-
-	li {
-		display: flex-item;
-		width: 20%;
-		margin: 1rem 2.5%;
-		position: relative;
-	}
-
-	img {
-		max-width: 100%;
-		display: block;
-	}
-
-	.close-icon, .status-indicator {
-		--size: 20px;
-		position: absolute;
-		line-height: var(--size);
-		height: var(--size);
-		border-radius: var(--size);
-		box-shadow: 0 0 5px currentColor;
-		right: 0.25rem;
-		appearance: none;
-		border: 0;
-		padding: 0;
-	}
-
-	.close-icon {
-		width: var(--size);
-		font-size: var(--size);
-		background: #933;
-		color: #fff;
-		top: 0.25rem;
-	}
-
-	.status-indicator {
-		font-size: calc(0.75 * var(--size));
-		bottom: 0.25rem;
-		padding: 0 10px;
-	}
-
-	.loading-indicator {
-		animation: pulse 1.5s linear 0s infinite;
-		color: #000;
-	}
-
-	.success-indicator {
-		background: #6c6;
-		color: #040;
-	}
-
-	.failure-indicator {
-		background: #933;
-		color: #fff;
-	}
 }
 
 .upload-button {
@@ -176,17 +140,7 @@ label {
 	text-transform: uppercase;
 }
 
-@keyframes pulse {
-	0% {
-		background: #fff;
-	}
-
-	50% {
-		background: #ddd;
-	}
-
-	100% {
-		background: #fff;
-	}
+button {
+	cursor: pointer;
 }
 </style>

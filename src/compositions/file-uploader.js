@@ -1,4 +1,4 @@
-export default async function uploadFile(file, url) {
+export async function uploadFile(file, url) {
 	// set up the request data
 	let formData = new FormData()
 	formData.append('file', file.file)
@@ -13,8 +13,17 @@ export default async function uploadFile(file, url) {
 	return response
 }
 
-export function createUploader(url) {
-	return function fileUploader(file) {
-		return uploadFile(file, url)
+export function uploadFiles(files, url) {
+	return Promise.all(files.map(file => uploadFile(file, url)))
+}
+
+export default function createUploader(url) {
+	return {
+		uploadFile: function(file) {
+			return uploadFile(file, url)
+		},
+		uploadFiles: function(files) {
+			return uploadFiles(files, url)
+		}
 	}
 }
