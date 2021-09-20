@@ -1,7 +1,7 @@
 tasks:
-  - name: Run
-    init: npm ci
-    command: npm run serve
+- name: Run
+  init: npm ci
+  command: npm run serve
 
 vscode:
   extensions:
@@ -9,6 +9,6 @@ vscode:
     - octref.vetur
 
 ports:
-  - port: 8080
-    onOpen: open-preview
-    visibility: private
+- port: 8080
+  onOpen: open-preview
+  visibility: private
