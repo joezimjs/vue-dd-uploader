@@ -7,6 +7,7 @@ vscode:
   extensions:
     - mhutchie.git-graph
     - octref.vetur
+
 ports:
   - port: 8080
     onOpen: open-preview
