@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="stylus">
 html {
 	height: 100%;
 	width: 100%;
@@ -79,6 +79,12 @@ html {
 			var(--color1) calc(var(--size) * 12)
 		);
 }
+
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
 </style>
 
 <style scoped lang="stylus">
@@ -88,11 +94,17 @@ html {
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
 	color: #2c3e50;
-	margin: 60px auto 0;
-	max-width: 800px;
+	margin: 0 auto;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 .drop-area {
+	width: 100%;
+	max-width: 800px;
+	margin: 0 auto;
 	padding: 50px;
 	background: #ffffff55;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
