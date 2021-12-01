@@ -3,10 +3,10 @@
 /**
  * @type {import('@vue/cli-service').ProjectOptions}
  */
- module.exports = {
-    configureWebpack: {
-        devServer: {
-            disableHostCheck: true
-        }
-    }
-  }
+module.exports = {
+	configureWebpack: {
+		devServer: {
+			disableHostCheck: true
+		}
+	}
+}
