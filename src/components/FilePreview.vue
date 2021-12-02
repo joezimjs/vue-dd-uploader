@@ -2,7 +2,6 @@
 	<component :is="tag" class="file-preview">
 		<button @click="$emit('remove', file)" class="close-icon">&times;</button>
 		<img :src="file.url" alt="" width="500" />
-		<!-- ({{ i }}) {{ file.status }} -->
 
 		<span class="status-indicator loading-indicator" v-show="file.status == 'loading'">In Progress</span>
 		<span class="status-indicator success-indicator" v-show="file.status == true">Uploaded</span>
@@ -10,16 +9,17 @@
 	</component>
 </template>
 
-<script>
-export default {
-	name: 'FilePreview',
-	emits: ['remove'],
+<script setup>
+import {toRefs} from 'vue'
 
-	props: {
-		file: { type: Object },
-		tag: { type: String, default: 'li' }
-	}
-}
+const props = defineProps({
+	file: { type: Object, required: true },
+	tag: { type: String, default: 'li' },
+})
+
+let { file, tag } = toRefs(props)
+
+defineEmits(['remove'])
 </script>
 
 <style scoped lang="stylus">

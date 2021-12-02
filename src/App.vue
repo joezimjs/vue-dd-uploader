@@ -2,13 +2,17 @@
 	<div id="app">
 		<DropZone class="drop-area" @files-dropped="addFiles" v-slot:default="{ dropZoneActive }">
 			<label for="file-input">
-				<div>{{ dropZoneActive ? 'Drop Them Here' : 'Drag Your Files Here' }}</div>
-				<div class="smaller" v-if="!dropZoneActive">
-					or <strong><em>click here</em></strong> to select files
+				<div v-if="dropZoneActive">
+					<div>Drop Them Here</div>
+					<div class="smaller">to add them</div>
 				</div>
-				<div class="smaller" v-else>
-					to add them
+				<div v-else>
+					<div>Drag Your Files Here</div>
+					<div class="smaller">
+						or <strong><em>click here</em></strong> to select files
+					</div>
 				</div>
+
 				<input type="file" id="file-input" multiple @change="onInputChange" />
 			</label>
 			<ul class="image-list" v-show="files.length">
@@ -19,34 +23,18 @@
 	</div>
 </template>
 
-<script>
+<script setup>
 import useFileList from '@/compositions/file-list'
 import createUploader from '@/compositions/file-uploader'
 import DropZone from './components/DropZone.vue'
 import FilePreview from './components/FilePreview.vue'
 
-export default {
-	name: 'app',
-	components: { DropZone, FilePreview },
+const { files, addFiles, removeFile } = useFileList()
+const { uploadFiles } = createUploader('YOUR URL HERE')
 
-	setup() {
-		const { files, addFiles, removeFile, fileUrl } = useFileList()
-		const { uploadFiles } = createUploader('YOUR URL HERE')
-
-		return { files, addFiles, removeFile, fileUrl, uploadFiles }
-	},
-
-	data: () => ({
-		uploads: [],
-		status
-	}),
-
-	methods: {
-		onInputChange(e) {
-			this.addFiles(e.target.files)
-			e.target.value = null // reset so that selecting the same file again will still cause it to fire this change
-		}
-	}
+function onInputChange(e) {
+	addFiles(e.target.files)
+	e.target.value = null // reset so that selecting the same file again will still cause it to fire this change
 }
 </script>
 

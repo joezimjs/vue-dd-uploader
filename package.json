@@ -8,6 +8,7 @@
 		"lint": "vue-cli-service lint"
 	},
 	"dependencies": {
+		"@babel/eslint-parser": "^7.16.3",
 		"core-js": "^3.19.2",
 		"vue": "^3.2.23"
 	},
@@ -18,40 +19,33 @@
 		"@vue/compiler-sfc": "^3.2.23",
 		"@vue/eslint-config-prettier": "^6.0.0",
 		"babel-eslint": "^10.1.0",
-		"eslint": "^6.7.2",
-		"eslint-plugin-prettier": "^3.4.1",
-		"eslint-plugin-vue": "^7.20.0",
-		"prettier": "^1.19.1",
-		"stylus": "^0.54.7",
+		"eslint": "^7.32.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"eslint-plugin-vue": "^8.1.1",
+		"prettier": "^2.5.0",
+		"stylus": "^0.55.0",
 		"stylus-loader": "^3.0.2"
 	},
 	"eslintConfig": {
 		"root": true,
-		"env": {
-			"node": true
-		},
 		"extends": [
 			"plugin:vue/vue3-essential",
-			"eslint:recommended",
-			"@vue/prettier"
+			"eslint:recommended"
 		],
+		"parser": "vue-eslint-parser",
 		"parserOptions": {
-			"parser": "babel-eslint"
+			"parser": "@babel/eslint-parser",
+			"ecmaVersion": "latest",
+			"sourceType": "module"
 		},
-		"rules": {
-			"no-unused-vars": [
-				"warn"
-			],
-			"vue/script-setup-uses-vars": 0
+		"plugins": [
+			"vue"
+		],
+		"env": {
+			"node": true,
+			"vue/setup-compiler-macros": true
 		}
-	},
-	"prettier": {
-		"useTabs": true,
-		"tabWidth": 3,
-		"printWidth": 150,
-		"semi": false,
-		"singleQuote": true,
-		"bracketSpacing": true
 	},
 	"browserslist": [
 		"> 1%",

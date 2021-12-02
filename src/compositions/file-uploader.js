@@ -14,16 +14,16 @@ export async function uploadFile(file, url) {
 }
 
 export function uploadFiles(files, url) {
-	return Promise.all(files.map(file => uploadFile(file, url)))
+	return Promise.all(files.map((file) => uploadFile(file, url)))
 }
 
 export default function createUploader(url) {
 	return {
-		uploadFile: function(file) {
+		uploadFile: function (file) {
 			return uploadFile(file, url)
 		},
-		uploadFiles: function(files) {
+		uploadFiles: function (files) {
 			return uploadFiles(files, url)
-		}
+		},
 	}
 }
