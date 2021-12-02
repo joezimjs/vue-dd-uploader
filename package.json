@@ -41,7 +41,8 @@
 		"rules": {
 			"no-unused-vars": [
 				"warn"
-			]
+			],
+			"vue/script-setup-uses-vars": 0
 		}
 	},
 	"prettier": {
