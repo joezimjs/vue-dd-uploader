@@ -18,11 +18,7 @@ export default function () {
 		if (index > -1) files.value.splice(index, 1)
 	}
 
-	function fileUrl(file) {
-		return URL.createObjectURL(file)
-	}
-
-	return { files, addFiles, removeFile, fileUrl }
+	return { files, addFiles, removeFile }
 }
 
 class UploadableFile {
