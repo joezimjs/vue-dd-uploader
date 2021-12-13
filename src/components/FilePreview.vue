@@ -1,7 +1,7 @@
 <template>
 	<component :is="tag" class="file-preview">
 		<button @click="$emit('remove', file)" class="close-icon">&times;</button>
-		<img :src="file.url" alt="" width="500" />
+		<img :src="file.url" :alt="file.file.name" :title="file.file.name" />
 
 		<span class="status-indicator loading-indicator" v-show="file.status == 'loading'">In Progress</span>
 		<span class="status-indicator success-indicator" v-show="file.status == true">Uploaded</span>
