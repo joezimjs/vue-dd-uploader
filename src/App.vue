@@ -24,18 +24,22 @@
 </template>
 
 <script setup>
-import useFileList from '@/compositions/file-list'
-import createUploader from '@/compositions/file-uploader'
+// Components
 import DropZone from './components/DropZone.vue'
 import FilePreview from './components/FilePreview.vue'
 
+// File Management
+import useFileList from '@/compositions/file-list'
 const { files, addFiles, removeFile } = useFileList()
-const { uploadFiles } = createUploader('YOUR URL HERE')
 
 function onInputChange(e) {
 	addFiles(e.target.files)
 	e.target.value = null // reset so that selecting the same file again will still cause it to fire this change
 }
+
+// Uploader
+import createUploader from '@/compositions/file-uploader'
+const { uploadFiles } = createUploader('YOUR URL HERE')
 </script>
 
 <style lang="stylus">

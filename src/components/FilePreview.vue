@@ -56,6 +56,7 @@ defineEmits(['remove'])
 		background: #933;
 		color: #fff;
 		top: 0.25rem;
+		cursor: pointer;
 	}
 
 	.status-indicator {
