@@ -2,16 +2,16 @@
 	<div id="app">
 		<DropZone class="drop-area" @files-dropped="addFiles" v-slot:default="{ dropZoneActive }">
 			<label for="file-input">
-				<div v-if="dropZoneActive">
-					<div>Drop Them Here</div>
-					<div class="smaller">to add them</div>
-				</div>
-				<div v-else>
-					<div>Drag Your Files Here</div>
-					<div class="smaller">
+				<span v-if="dropZoneActive">
+					<span>Drop Them Here</span>
+					<span class="smaller">to add them</span>
+				</span>
+				<span v-else>
+					<span>Drag Your Files Here</span>
+					<span class="smaller">
 						or <strong><em>click here</em></strong> to select files
-					</div>
-				</div>
+					</span>
+				</span>
 
 				<input type="file" id="file-input" multiple @change="onInputChange" />
 			</label>
@@ -111,6 +111,11 @@ body {
 label {
 	font-size: 36px;
 	cursor: pointer;
+	display: block;
+
+	span {
+		display: block;
+	}
 
 	input[type=file] {
 		position: absolute;
