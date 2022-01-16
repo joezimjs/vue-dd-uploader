@@ -29,7 +29,7 @@ import DropZone from './components/DropZone.vue'
 import FilePreview from './components/FilePreview.vue'
 
 // File Management
-import useFileList from '@/compositions/file-list'
+import useFileList from './compositions/file-list'
 const { files, addFiles, removeFile } = useFileList()
 
 function onInputChange(e) {
@@ -38,7 +38,7 @@ function onInputChange(e) {
 }
 
 // Uploader
-import createUploader from '@/compositions/file-uploader'
+import createUploader from './compositions/file-uploader'
 const { uploadFiles } = createUploader('YOUR URL HERE')
 </script>
 
