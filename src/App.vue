@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<DropZone class="drop-area" @files-dropped="addFiles" v-slot:default="{ dropZoneActive }">
+		<DropZone class="drop-area" @files-dropped="addFiles" #default="{ dropZoneActive }">
 			<label for="file-input">
 				<span v-if="dropZoneActive">
 					<span>Drop Them Here</span>
