@@ -10,14 +10,10 @@
 </template>
 
 <script setup>
-import {toRefs} from 'vue'
-
-const props = defineProps({
+defineProps({
 	file: { type: Object, required: true },
 	tag: { type: String, default: 'li' },
 })
-
-let { file, tag } = toRefs(props)
 
 defineEmits(['remove'])
 </script>
